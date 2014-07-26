@@ -95,6 +95,7 @@ var game = {
 
 		$("#strike-off").html(game.strikeOffLevel);
 		$('#level').html("LEVEL : " + game.level);
+		dataLayer.push({'Game Level':game.level});  // GAME LEVEL TO GTM
 	},
 
 	sumUpTheWeightsInPans : function() {
@@ -146,6 +147,10 @@ var game = {
 		if(game.totalWeightInPanOne == this.result && game.totalWeightInPanTwo == this.result) {
 
 			$('#result').html("Yes, Perfect!");
+			
+			// Send  Succes to DataLayer
+			dataLayer.push({'Level State': 'Completed' , 'event':'state-change'});
+			
 			$('.draggable').remove();
 
 			setTimeout(function(){
@@ -156,6 +161,8 @@ var game = {
 		}
 		else{
 			$('#result').html("Nope..");
+			// Send Failure to dataLayer
+			dataLayer.push({'Level State': 'Try Again' , 'event':'state-change'});
 			setTimeout(function(){
 				$('#result').html('');
 			},1000);
@@ -165,6 +172,8 @@ var game = {
 	gameOver : function () {
 
 		var result = $('#timer').text();
+			// GAME COMPLETE
+			dataLayer.push({'Level State': 'Game Completed' , 'event':'state-change'});
 
 		var endingNote = $('<p class="exit" id="final-score"> Your final score is: '+ result +'</p>'+
                            '<p class="exit"> Thank you for playing.Please give us your feedback'+
